@@ -1,0 +1,108 @@
+---
+title: FAQ
+description: Frequently asked questions about OpenSpec
+---
+
+## General
+
+### How is OpenSpec different from my agent's built-in plan mode?
+
+Plan mode is great for a single chat session. OpenSpec focuses on:
+- Plans that extend over multiple sessions
+- Specifications you can share with others
+- A workspace for iterative refinement
+- Living documentation beyond the conversation
+
+### What makes OpenSpec different from other planning tools?
+
+**Lightweight** - Minimal steps, minimal process. Get to code quickly.
+
+**Brownfield-first** - Most tools assume greenfield. OpenSpec excels at modifying existing behavior across multiple specs.
+
+**Specs live in code** - Other tools throw away requirements after planning. OpenSpec preserves them as living documentation.
+
+### Why use specs instead of detailed prompts?
+
+Specs serve as alignment. A structured space to think before coding. Better clarity for you, better context for your AI when executing the plan.
+
+You wouldn't ask an architect to build without blueprints. Same idea here.
+
+## Usage
+
+### Can I use OpenSpec on an existing codebase?
+
+Yes! Specs are created as you build. Create them as you need them and grow your documentation organically.
+
+### Where do specs live?
+
+In your codebase, checked into git. They provide visibility into system behavior and the intent behind the code.
+
+### What happens when I switch AI tools?
+
+OpenSpec is a universal planning layer. Your specs stay with your code regardless of which AI you use. Run `openspec init` to add new tool configurations.
+
+### How do teams collaborate on specs?
+
+Through git - PRs, reviews, the usual workflow. Specs and changes are just markdown files.
+
+## Workflow
+
+### Wait, isn't this just waterfall?
+
+Waterfall fails because of rigid, month-long upfront planning. OpenSpec is different:
+- Get to a "good enough" plan quickly
+- Start coding, iterate as needed
+- Update specs when reality changes
+
+Minimal effort, lightweight process.
+
+### When should I skip creating a proposal?
+
+- Bug fixes (restoring intended behavior)
+- Typos, formatting, comments
+- Dependency updates (non-breaking)
+- Tests for existing behavior
+- Configuration changes
+
+### What if my specs get out of sync?
+
+Update them! Specs should reflect current reality. When behavior changes, update the spec to match.
+
+## Technical
+
+### What runtime does OpenSpec require?
+
+[Bun](https://bun.sh). Install it first, then use `bunx @clanker-guru/openspec` or install globally.
+
+### Which AI tools are supported?
+
+20+ tools including:
+- **Native slash commands**: Claude Code, Cursor, Codex, GitHub Copilot, OpenCode, Windsurf, Gemini CLI, Cline, and more
+- **AGENTS.md compatible**: Jules, Amp, Factory, and any tool supporting the convention
+
+See [Integrations](/guides/integrations) for the full list.
+
+### Is there a VS Code extension?
+
+Not currently. OpenSpec works through your AI assistant's interface and the CLI.
+
+## Philosophy
+
+### I'm a vibe coder - is this for me?
+
+It depends. If you want a magic tool that plans everything without effort, this isn't it.
+
+OpenSpec works best when you:
+- Read and think through specs
+- Engage with the planning process
+- Meet the tool halfway
+
+It helps you build the right thing - but requires your participation.
+
+### Do I need to write specs for everything?
+
+No. Start with new features and changes that need review. Grow your spec coverage organically.
+
+### How detailed should specs be?
+
+Detailed enough to be unambiguous, brief enough to be maintainable. Every requirement should have at least one scenario showing concrete behavior.

@@ -1,0 +1,166 @@
+---
+title: Specs and Changes
+description: Understanding the core concepts of OpenSpec
+---
+
+OpenSpec separates **what is built** (specs) from **what should change** (changes).
+
+## Directory Structure
+
+```
+openspec/
+├── project.md          # Project conventions
+├── AGENTS.md           # AI instructions
+├── specs/              # Current truth - what IS built
+│   └── [capability]/
+│       ├── spec.md     # Requirements and scenarios
+│       └── design.md   # Technical patterns (optional)
+└── changes/            # Proposals - what SHOULD change
+    ├── [change-name]/
+    │   ├── proposal.md
+    │   ├── tasks.md
+    │   └── specs/      # Delta changes
+    └── archive/        # Completed changes
+```
+
+## Specs: The Source of Truth
+
+Specs live in `openspec/specs/` and represent **current reality** - what the system actually does today.
+
+### Structure
+
+```markdown
+# Auth Specification
+
+## Purpose
+Authentication and session management for users.
+
+## Requirements
+
+### Requirement: User Login
+The system SHALL authenticate users with email and password.
+
+#### Scenario: Valid credentials
+- **WHEN** valid email and password provided
+- **THEN** return JWT token
+- **AND** set session cookie
+
+#### Scenario: Invalid credentials
+- **WHEN** invalid credentials provided
+- **THEN** return 401 Unauthorized
+```
+
+### Key Principles
+
+- **One capability per spec** - keep specs focused
+- **Use SHALL/MUST** - for normative requirements
+- **Every requirement needs scenarios** - concrete examples
+- **Specs reflect reality** - update when behavior changes
+
+## Changes: Proposals for the Future
+
+Changes live in `openspec/changes/` and represent **proposals** - what you want to build.
+
+### Change Structure
+
+```
+changes/add-two-factor-auth/
+├── proposal.md     # Why and what
+├── tasks.md        # How (implementation steps)
+├── design.md       # Technical decisions (optional)
+└── specs/
+    └── auth/
+        └── spec.md # Delta: ADDED/MODIFIED/REMOVED
+```
+
+### proposal.md
+
+```markdown
+# Change: Add Two-Factor Authentication
+
+## Why
+Users need additional security for sensitive accounts.
+
+## What Changes
+- Add OTP generation and verification
+- Modify login flow to require second factor
+- **BREAKING**: All users must re-authenticate
+
+## Impact
+- Affected specs: auth
+- Affected code: src/auth/, src/api/login
+```
+
+### tasks.md
+
+```markdown
+## 1. Database
+- [ ] 1.1 Add OTP secret column
+- [ ] 1.2 Create verification logs table
+
+## 2. Backend
+- [ ] 2.1 Implement OTP generation
+- [ ] 2.2 Add verification endpoint
+```
+
+## Deltas: How Specs Change
+
+Delta files show what changes using operation headers:
+
+### ADDED Requirements
+
+New capabilities:
+
+```markdown
+## ADDED Requirements
+
+### Requirement: Two-Factor Authentication
+The system MUST require OTP verification during login.
+
+#### Scenario: OTP required
+- **WHEN** valid credentials provided
+- **THEN** prompt for OTP code
+```
+
+### MODIFIED Requirements
+
+Changed behavior (include complete updated text):
+
+```markdown
+## MODIFIED Requirements
+
+### Requirement: User Login
+The system SHALL authenticate users with email, password, AND OTP.
+
+#### Scenario: Complete authentication
+- **WHEN** valid credentials and OTP provided
+- **THEN** return JWT token
+```
+
+### REMOVED Requirements
+
+Deprecated features:
+
+```markdown
+## REMOVED Requirements
+
+### Requirement: Remember Me
+**Reason**: Security risk with 2FA
+**Migration**: Users must log in each session
+```
+
+## Lifecycle
+
+1. **Create**: AI scaffolds change with proposal, tasks, spec deltas
+2. **Refine**: Iterate on specs until aligned
+3. **Validate**: `openspec validate change-name --strict`
+4. **Implement**: Work through tasks
+5. **Archive**: Merge deltas into main specs
+
+## Quick Reference
+
+| Location | Purpose | Updates |
+|----------|---------|---------|
+| `specs/` | Current truth | After archiving |
+| `changes/` | Active proposals | During development |
+| `changes/archive/` | Historical record | Never (read-only) |

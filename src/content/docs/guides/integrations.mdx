@@ -1,0 +1,149 @@
+---
+title: AI Tool Integrations
+description: Configure OpenSpec with your AI coding assistant
+---
+
+OpenSpec works with 20+ AI coding assistants through native slash commands or AGENTS.md compatibility.
+
+## Native Slash Commands
+
+These tools have built-in OpenSpec integration with custom commands:
+
+| Tool | Commands | Config Path |
+|------|----------|-------------|
+| Amazon Q Developer | `@openspec-proposal`, `@openspec-apply`, `@openspec-archive` | `.amazonq/prompts/` |
+| Antigravity | `/openspec-proposal`, etc. | `.agent/workflows/` |
+| Auggie (Augment CLI) | `/openspec-proposal`, etc. | `.augment/commands/` |
+| Claude Code | `/openspec:proposal`, `/openspec:apply`, `/openspec:archive` | `.claude/commands/openspec/` |
+| Cline | Workflow files | `.clinerules/workflows/` |
+| CodeBuddy Code | `/openspec:proposal`, etc. | `.codebuddy/commands/` |
+| Codex | `/openspec-proposal`, etc. | `~/.codex/prompts/` |
+| CoStrict | `/openspec-proposal`, etc. | `.cospec/openspec/commands/` |
+| Crush | `/openspec-proposal`, etc. | `.crush/commands/openspec/` |
+| Cursor | `/openspec-proposal`, etc. | `.cursor/commands/` |
+| Factory Droid | `/openspec-proposal`, etc. | `.factory/commands/` |
+| Gemini CLI | `/openspec:proposal`, etc. | `.gemini/commands/openspec/` |
+| GitHub Copilot | `/openspec-proposal`, etc. | `.github/prompts/` |
+| iFlow | `/openspec-proposal`, etc. | `.iflow/commands/` |
+| Kilo Code | Workflow files | `.kilocode/workflows/` |
+| OpenCode | `/openspec-proposal`, etc. | `.opencode/commands/` |
+| Qoder | `/openspec:proposal`, etc. | `.qoder/commands/openspec/` |
+| Qwen Code | `/openspec-proposal`, etc. | `.qwen/commands/` |
+| RooCode | `/openspec-proposal`, etc. | `.roo/commands/` |
+| Windsurf | Workflow files | `.windsurf/workflows/` |
+
+## AGENTS.md Compatible
+
+These tools read workflow instructions from `openspec/AGENTS.md` automatically:
+
+- Amp
+- Jules
+- Factory
+- Any tool supporting the [AGENTS.md convention](https://agents.md/)
+
+No slash commands needed - just chat naturally and the AI picks up the instructions.
+
+## Setup
+
+### During Initialization
+
+```bash
+openspec init
+```
+
+Select your tools from the interactive menu. Multiple selections are supported.
+
+### Non-Interactive Setup
+
+```bash
+# Specific tools
+openspec init --tools claude,cursor,opencode
+
+# All available tools
+openspec init --tools all
+```
+
+### Adding Tools Later
+
+```bash
+# Add new tool to existing setup
+openspec init --tools github-copilot
+```
+
+## Tool-Specific Notes
+
+### Claude Code
+
+Commands use colon syntax: `/openspec:proposal`
+
+Files created:
+- `.claude/commands/openspec/proposal.md`
+- `.claude/commands/openspec/apply.md`
+- `.claude/commands/openspec/archive.md`
+- `CLAUDE.md` (root handoff)
+
+### Cursor
+
+Commands use dash syntax: `/openspec-proposal`
+
+Files created:
+- `.cursor/commands/openspec-proposal.md`
+- `.cursor/commands/openspec-apply.md`
+- `.cursor/commands/openspec-archive.md`
+
+### Codex
+
+Prompts installed globally:
+- `~/.codex/prompts/openspec-proposal.md`
+- Or `$CODEX_HOME/prompts/` if set
+
+### GitHub Copilot
+
+Uses `.prompt.md` extension with YAML frontmatter:
+- `.github/prompts/openspec-proposal.prompt.md`
+
+### Gemini CLI
+
+Uses TOML format:
+- `.gemini/commands/openspec/proposal.toml`
+
+## Troubleshooting
+
+### Commands not appearing
+
+1. Restart your AI assistant
+2. Run `openspec update` to refresh configurations
+3. Check that config files exist in expected locations
+
+### Wrong tool selected
+
+```bash
+# Re-run init to add or refresh tools
+openspec init
+```
+
+### Slash commands outdated
+
+```bash
+openspec update
+```
+
+This refreshes all managed content while preserving custom additions.
+
+## Using Without Slash Commands
+
+For tools without native support, use natural language:
+
+```
+Create an OpenSpec change proposal for adding user authentication
+```
+
+```
+Apply the add-user-auth OpenSpec change
+```
+
+```
+Archive the completed add-user-auth change
+```
+
+The AI reads instructions from `openspec/AGENTS.md` and follows the workflow.

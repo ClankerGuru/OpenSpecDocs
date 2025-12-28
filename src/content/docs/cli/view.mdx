@@ -1,0 +1,71 @@
+---
+title: openspec view
+description: Interactive dashboard for specs and changes
+---
+
+Displays an interactive dashboard showing spec counts and change progress at a glance.
+
+## Usage
+
+```bash
+openspec view
+```
+
+## Output
+
+```bash
+$ openspec view
+
+╔═══════════════════════════════════════════════════════════════╗
+║                        OpenSpec Dashboard                      ║
+╠═══════════════════════════════════════════════════════════════╣
+║                                                                 ║
+║  SPECIFICATIONS                                                 ║
+║  ─────────────────────────────────────────────────────────────  ║
+║  cli-init          12 requirements                              ║
+║  cli-list           6 requirements                              ║
+║  cli-archive        8 requirements                              ║
+║  user-auth          5 requirements                              ║
+║                                                                 ║
+║  ACTIVE CHANGES                                                 ║
+║  ─────────────────────────────────────────────────────────────  ║
+║  add-2fa           ████████░░ 4/5 tasks                        ║
+║  update-schema     ██████████ Complete                          ║
+║  fix-validation    ░░░░░░░░░░ 0/3 tasks                        ║
+║                                                                 ║
+║  ARCHIVED                                                       ║
+║  ─────────────────────────────────────────────────────────────  ║
+║  2025-01-10-add-auth                                           ║
+║  2025-01-08-setup-ci                                           ║
+║                                                                 ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+## Features
+
+- **Spec overview**: All capabilities with requirement counts
+- **Change progress**: Visual progress bars for active changes
+- **Archive history**: Recently completed changes
+
+## Use Cases
+
+### Quick status check
+
+```bash
+openspec view
+```
+
+### Before standup
+
+See what's in progress and what's complete.
+
+### Onboarding
+
+Get a bird's-eye view of the project's specifications.
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | Not an OpenSpec project |

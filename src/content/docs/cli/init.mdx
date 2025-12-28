@@ -1,0 +1,122 @@
+---
+title: openspec init
+description: Initialize OpenSpec in a project
+---
+
+Creates the OpenSpec directory structure and configures AI tool integrations.
+
+## Usage
+
+```bash
+openspec init [path] [options]
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `path` | Project directory (default: current) |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `--tools <list>` | Comma-separated tool IDs, `all`, or `none` |
+
+## What It Creates
+
+```
+openspec/
+├── project.md          # Project conventions template
+├── AGENTS.md           # AI instructions
+├── specs/              # Specifications directory
+└── changes/
+    └── archive/        # Completed changes
+```
+
+Plus tool-specific files based on your selection.
+
+## Interactive Mode
+
+When run without `--tools`, prompts for AI tool selection:
+
+```
+? Which AI tools would you like to configure?
+  ◉ Claude Code
+  ◯ Cursor
+  ◉ OpenCode
+  ◯ GitHub Copilot
+```
+
+## Non-Interactive Mode
+
+```bash
+# Select specific tools
+openspec init --tools claude,cursor,opencode
+
+# Select all available tools
+openspec init --tools all
+
+# Skip tool configuration
+openspec init --tools none
+```
+
+## Examples
+
+### Basic initialization
+
+```bash
+cd my-project
+openspec init
+```
+
+### Initialize subdirectory
+
+```bash
+openspec init ./packages/api
+```
+
+### CI/CD initialization
+
+```bash
+openspec init --tools all
+```
+
+## Tool Configurations
+
+Each selected tool gets its own configuration:
+
+| Tool | Files Created |
+|------|---------------|
+| Claude Code | `.claude/commands/openspec/*.md`, `CLAUDE.md` |
+| Cursor | `.cursor/commands/openspec-*.md` |
+| OpenCode | `.opencode/commands/openspec-*.md` |
+| Windsurf | `.windsurf/workflows/openspec-*.md` |
+| Codex | `~/.codex/prompts/openspec-*.md` |
+| GitHub Copilot | `.github/prompts/openspec-*.prompt.md` |
+
+## Extend Mode
+
+If OpenSpec is already initialized, `init` enters extend mode:
+
+- Skips directory creation
+- Allows adding new tools
+- Refreshes existing tool configurations
+
+```bash
+# Add Cursor to existing setup
+openspec init --tools cursor
+```
+
+## After Initialization
+
+1. **Restart your AI assistant** - Slash commands load at startup
+2. **Populate project.md** - Add your conventions
+3. **Run** `openspec list` - Verify setup
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | Error (invalid tools, permissions) |

@@ -1,0 +1,100 @@
+---
+title: Quick Start
+description: Create your first OpenSpec change in 5 minutes
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+This guide walks through a complete OpenSpec workflow from proposal to archive.
+
+<Steps>
+
+1. **Initialize OpenSpec**
+
+   ```bash
+   cd your-project
+   openspec init
+   ```
+
+   Select your AI tools when prompted. This creates the `openspec/` directory.
+
+2. **Create a Change Proposal**
+
+   Ask your AI assistant:
+
+   ```
+   Create an OpenSpec change proposal for adding two-factor authentication
+   ```
+
+   The AI creates:
+   ```
+   openspec/changes/add-two-factor-auth/
+   ├── proposal.md       # Why and what
+   ├── tasks.md          # Implementation checklist
+   └── specs/
+       └── auth/
+           └── spec.md   # Requirement deltas
+   ```
+
+3. **Review the Proposal**
+
+   ```bash
+   openspec show add-two-factor-auth
+   ```
+
+   Refine with your AI until specs match your needs.
+
+4. **Validate the Change**
+
+   ```bash
+   openspec validate add-two-factor-auth --strict
+   ```
+
+   Fix any formatting issues before proceeding.
+
+5. **Implement the Tasks**
+
+   ```
+   /openspec:apply add-two-factor-auth
+   ```
+
+   The AI works through `tasks.md`, marking items complete.
+
+6. **Archive After Deployment**
+
+   ```bash
+   openspec archive add-two-factor-auth --yes
+   ```
+
+   This:
+   - Moves the change to `archive/`
+   - Updates main specs with the deltas
+   - Records the completion date
+
+</Steps>
+
+## Example: The Complete Flow
+
+```bash
+# 1. Start fresh
+openspec init
+
+# 2. Check what exists
+openspec list           # Active changes
+openspec list --specs   # Existing specs
+
+# 3. After AI creates proposal
+openspec validate add-2fa --strict
+
+# 4. Review everything
+openspec show add-2fa
+
+# 5. After implementation
+openspec archive add-2fa --yes
+```
+
+## What's Next?
+
+- Understand the [three-stage workflow](/concepts/workflow)
+- Learn [spec format](/guides/spec-format) for writing requirements
+- Explore all [CLI commands](/cli)

@@ -1,0 +1,144 @@
+---
+title: openspec show
+description: Display change or spec details
+---
+
+Shows detailed information about a change or specification.
+
+## Usage
+
+```bash
+openspec show [item] [options]
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `item` | Change or spec name (optional - interactive if omitted) |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `--type <type>` | Force type: `change` or `spec` |
+| `--json` | Machine-readable output |
+| `--deltas-only` | Show only delta specs (changes) |
+| `-r <num>` | Show specific requirement by index |
+
+## Interactive Mode
+
+Without arguments, shows a selection menu:
+
+```bash
+$ openspec show
+
+? Select item to show:
+❯ add-user-auth (change)
+  update-schema (change)
+  cli-init (spec)
+  user-auth (spec)
+```
+
+## Change Output
+
+```bash
+$ openspec show add-user-auth
+
+═══════════════════════════════════════════════
+ add-user-auth
+═══════════════════════════════════════════════
+
+PROPOSAL
+────────────────────────────────────────────────
+## Why
+Add user authentication to secure API endpoints.
+
+## What Changes
+- Add JWT-based authentication
+- Implement login/logout endpoints
+
+TASKS
+────────────────────────────────────────────────
+## 1. Backend
+- [x] 1.1 Add auth middleware
+- [ ] 1.2 Implement login endpoint
+
+SPEC DELTAS
+────────────────────────────────────────────────
+specs/user-auth/spec.md:
+  + 2 added requirements
+```
+
+## Spec Output
+
+```bash
+$ openspec show cli-init --type spec
+
+═══════════════════════════════════════════════
+ cli-init
+═══════════════════════════════════════════════
+
+## Purpose
+Initialize OpenSpec in a project.
+
+## Requirements
+
+### Requirement: Directory Creation
+The command SHALL create the OpenSpec directory structure.
+
+#### Scenario: Creating structure
+- WHEN openspec init is executed
+- THEN create openspec/ with required subdirectories
+```
+
+## JSON Output
+
+```bash
+$ openspec show add-user-auth --json --deltas-only
+
+{
+  "name": "add-user-auth",
+  "deltas": [
+    {
+      "spec": "user-auth",
+      "added": 2,
+      "modified": 0,
+      "removed": 0
+    }
+  ]
+}
+```
+
+## Examples
+
+### View change proposal
+
+```bash
+openspec show my-change
+```
+
+### View specific spec
+
+```bash
+openspec show auth --type spec
+```
+
+### Debug delta parsing
+
+```bash
+openspec show my-change --json --deltas-only | jq '.deltas'
+```
+
+### View specific requirement
+
+```bash
+openspec show cli-init --type spec -r 1
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | Item not found |

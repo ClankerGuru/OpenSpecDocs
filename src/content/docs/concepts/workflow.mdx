@@ -1,0 +1,121 @@
+---
+title: The Three-Stage Workflow
+description: How OpenSpec organizes work from proposal to deployment
+---
+
+OpenSpec uses a three-stage workflow to ensure alignment between humans and AI before code is written.
+
+```
+┌────────────────────┐
+│ Draft Change       │
+│ Proposal           │
+└────────┬───────────┘
+         │ share intent with your AI
+         ▼
+┌────────────────────┐
+│ Review & Align     │
+│ (edit specs/tasks) │◀──── feedback loop ────┐
+└────────┬───────────┘                        │
+         │ approved plan                      │
+         ▼                                    │
+┌────────────────────┐                        │
+│ Implement Tasks    │────────────────────────┘
+│ (AI writes code)   │
+└────────┬───────────┘
+         │ ship the change
+         ▼
+┌────────────────────┐
+│ Archive & Update   │
+│ Specs (source)     │
+└────────────────────┘
+```
+
+## Stage 1: Creating Changes
+
+Create a proposal when you need to:
+- Add features or functionality
+- Make breaking changes (API, schema)
+- Change architecture or patterns
+- Optimize performance (changes behavior)
+
+**Skip proposals for:**
+- Bug fixes (restoring intended behavior)
+- Typos, formatting, comments
+- Dependency updates (non-breaking)
+- Tests for existing behavior
+
+### What Gets Created
+
+```
+openspec/changes/add-feature/
+├── proposal.md     # Why and what changes
+├── tasks.md        # Implementation checklist
+├── design.md       # Technical decisions (optional)
+└── specs/
+    └── feature/
+        └── spec.md # ADDED/MODIFIED/REMOVED requirements
+```
+
+## Stage 2: Implementing Changes
+
+Once the proposal is approved:
+
+1. Read `proposal.md` to understand intent
+2. Review `design.md` for technical decisions
+3. Work through `tasks.md` sequentially
+4. Mark tasks complete as you go
+5. Verify all requirements are met
+
+The AI tracks progress in `tasks.md`:
+
+```markdown
+## 1. Database Setup
+- [x] 1.1 Add OTP column to users table
+- [x] 1.2 Create verification logs table
+
+## 2. Backend
+- [x] 2.1 Implement OTP generation
+- [ ] 2.2 Add verification endpoint  ← current
+```
+
+## Stage 3: Archiving Changes
+
+After deployment:
+
+```bash
+openspec archive add-feature --yes
+```
+
+This:
+1. Validates the change structure
+2. Applies spec deltas to main specs
+3. Moves the change to `archive/YYYY-MM-DD-add-feature/`
+
+### What Happens to Specs
+
+**Before archive:**
+- `specs/auth/spec.md` - current requirements
+- `changes/add-2fa/specs/auth/spec.md` - ADDED requirements
+
+**After archive:**
+- `specs/auth/spec.md` - updated with new requirements
+- `changes/archive/2025-01-15-add-2fa/` - historical record
+
+## Decision Tree
+
+```
+New request?
+├─ Bug fix restoring spec behavior? → Fix directly
+├─ Typo/format/comment? → Fix directly  
+├─ New feature/capability? → Create proposal
+├─ Breaking change? → Create proposal
+├─ Architecture change? → Create proposal
+└─ Unclear? → Create proposal (safer)
+```
+
+## Why This Works
+
+1. **Alignment before code**: Specs lock intent before implementation
+2. **Explicit scope**: Task lists prevent scope creep
+3. **Auditable history**: Archive preserves decision context
+4. **Living documentation**: Specs stay current with the codebase

@@ -1,0 +1,205 @@
+---
+title: Spec Format
+description: How to write OpenSpec specifications
+---
+
+Specs define **what** the system does using requirements and scenarios.
+
+## Structure
+
+```markdown
+# Capability Name
+
+## Purpose
+Brief description of what this capability provides.
+
+## Requirements
+
+### Requirement: Feature Name
+The system SHALL [do something].
+
+#### Scenario: Success case
+- **WHEN** [precondition]
+- **THEN** [expected result]
+- **AND** [additional result]
+```
+
+## Requirements
+
+### Header Format
+
+```markdown
+### Requirement: User Authentication
+```
+
+Always use `### Requirement:` (3 hashtags) followed by a descriptive name.
+
+### Wording
+
+Use **SHALL** or **MUST** for normative requirements:
+
+```markdown
+The system SHALL authenticate users with valid credentials.
+The system MUST reject expired tokens.
+```
+
+Avoid "should" or "may" unless intentionally non-normative.
+
+## Scenarios
+
+### Format
+
+Scenarios use exactly `#### Scenario:` (4 hashtags):
+
+```markdown
+#### Scenario: Valid login
+- **WHEN** user provides valid email and password
+- **THEN** return JWT token
+- **AND** set session cookie
+```
+
+### Required
+
+Every requirement **MUST** have at least one scenario. This ensures testable behavior.
+
+### Common Patterns
+
+**Success case:**
+```markdown
+#### Scenario: Successful creation
+- **WHEN** valid data provided
+- **THEN** create resource
+- **AND** return 201 Created
+```
+
+**Error case:**
+```markdown
+#### Scenario: Invalid input
+- **WHEN** required field missing
+- **THEN** return 400 Bad Request
+- **AND** include error details
+```
+
+**Edge case:**
+```markdown
+#### Scenario: Concurrent modification
+- **WHEN** resource modified by another user
+- **THEN** return 409 Conflict
+```
+
+## Delta Operations
+
+When creating changes, use delta headers:
+
+### ADDED Requirements
+
+New capabilities:
+
+```markdown
+## ADDED Requirements
+
+### Requirement: Two-Factor Authentication
+The system MUST support TOTP-based second factor.
+
+#### Scenario: OTP verification
+- **WHEN** valid OTP provided
+- **THEN** complete authentication
+```
+
+### MODIFIED Requirements
+
+Changed behavior. Include the **complete** updated requirement:
+
+```markdown
+## MODIFIED Requirements
+
+### Requirement: User Login
+The system SHALL authenticate users with email, password, AND OTP.
+
+#### Scenario: Full authentication flow
+- **WHEN** valid credentials and OTP
+- **THEN** return JWT token
+```
+
+:::caution
+Always include the full requirement text. Partial modifications will lose previous content.
+:::
+
+### REMOVED Requirements
+
+Deprecated features:
+
+```markdown
+## REMOVED Requirements
+
+### Requirement: Remember Me
+**Reason**: Security risk with 2FA enabled
+**Migration**: Users must authenticate each session
+```
+
+### RENAMED Requirements
+
+Name changes only:
+
+```markdown
+## RENAMED Requirements
+- FROM: `### Requirement: Login`
+- TO: `### Requirement: User Authentication`
+```
+
+## Common Mistakes
+
+### Wrong scenario format
+
+```markdown
+### Scenario: Wrong   ✗ (3 hashtags)
+- **Scenario: Wrong   ✗ (bullet)
+**Scenario**: Wrong    ✗ (bold)
+
+#### Scenario: Right  ✓ (4 hashtags)
+```
+
+### Missing scenarios
+
+```markdown
+### Requirement: Some Feature
+The system SHALL do something.
+(no scenarios)  ✗
+
+### Requirement: Some Feature
+The system SHALL do something.
+
+#### Scenario: Basic usage  ✓
+- **WHEN** triggered
+- **THEN** does something
+```
+
+### Partial MODIFIED
+
+```markdown
+## MODIFIED Requirements
+
+### Requirement: Login
+- Add OTP field  ✗ (partial - loses existing content)
+
+### Requirement: Login
+The system SHALL authenticate with email, password, and OTP.
+
+#### Scenario: Complete login  ✓ (full replacement)
+- **WHEN** all fields valid
+- **THEN** authenticate user
+```
+
+## Validation
+
+Check your specs:
+
+```bash
+openspec validate my-change --strict
+```
+
+Debug parsing:
+
+```bash
+openspec show my-change --json --deltas-only | jq '.deltas'
+```

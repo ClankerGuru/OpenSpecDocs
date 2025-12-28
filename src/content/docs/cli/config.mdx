@@ -1,0 +1,79 @@
+---
+title: openspec config
+description: Manage global OpenSpec settings
+---
+
+Manages global configuration settings stored in the user's config directory.
+
+## Usage
+
+```bash
+openspec config <command> [options]
+```
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `show` | Display current configuration |
+| `set <key> <value>` | Set a configuration value |
+| `get <key>` | Get a specific value |
+| `reset` | Reset to defaults |
+
+## Configuration Location
+
+Configuration is stored following XDG Base Directory specification:
+
+| Platform | Location |
+|----------|----------|
+| Linux/macOS | `$XDG_CONFIG_HOME/openspec/` or `~/.config/openspec/` |
+| Windows | `%APPDATA%\openspec\` |
+
+## Examples
+
+### Show all settings
+
+```bash
+$ openspec config show
+
+{
+  "defaultTools": ["claude", "cursor"],
+  "strictValidation": true
+}
+```
+
+### Set a value
+
+```bash
+openspec config set strictValidation false
+```
+
+### Get a value
+
+```bash
+$ openspec config get defaultTools
+["claude", "cursor"]
+```
+
+### Reset to defaults
+
+```bash
+$ openspec config reset
+
+Reset all configuration to defaults? [y/N]: y
+✓ Configuration reset
+```
+
+## Available Settings
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `defaultTools` | array | Tools to select by default in `init` |
+| `strictValidation` | boolean | Use strict mode by default |
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | Invalid key or value |

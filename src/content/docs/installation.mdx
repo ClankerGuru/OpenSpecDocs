@@ -1,0 +1,106 @@
+---
+title: Installation
+description: Install OpenSpec and configure your AI coding assistant
+---
+
+## Requirements
+
+OpenSpec requires **Bun** as its runtime. Install from [bun.sh](https://bun.sh) if you haven't already.
+
+## Install OpenSpec
+
+### Option 1: Run with bunx (Recommended)
+
+```bash
+bunx @clanker-guru/openspec
+```
+
+This downloads and runs the latest version without global installation.
+
+### Option 2: Global Installation
+
+```bash
+bun install -g @clanker-guru/openspec
+```
+
+Verify:
+
+```bash
+openspec --version
+```
+
+## Initialize in Your Project
+
+```bash
+cd your-project
+openspec init
+```
+
+During initialization, you'll be prompted to select your AI coding tools. OpenSpec supports:
+
+### Native Slash Commands
+
+These tools get custom `/openspec` commands:
+
+| Tool | Commands |
+|------|----------|
+| Claude Code | `/openspec:proposal`, `/openspec:apply`, `/openspec:archive` |
+| Cursor | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` |
+| Codex | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` |
+| GitHub Copilot | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` |
+| OpenCode | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` |
+| Windsurf | `/openspec-proposal`, `/openspec-apply`, `/openspec-archive` |
+| +15 more | See [Integrations](/guides/integrations) |
+
+### AGENTS.md Compatible
+
+These tools read instructions from `openspec/AGENTS.md` automatically:
+
+- Jules
+- Amp
+- Any AGENTS.md compatible tool
+
+## Non-Interactive Installation
+
+For CI/CD or scripts:
+
+```bash
+# Select specific tools
+openspec init --tools claude,cursor
+
+# Select all available tools
+openspec init --tools all
+
+# Skip tool configuration
+openspec init --tools none
+```
+
+## Updating OpenSpec
+
+```bash
+bun install -g @clanker-guru/openspec@latest
+```
+
+Then refresh your project's AI instructions:
+
+```bash
+openspec update
+```
+
+## Troubleshooting
+
+### Slash commands not appearing
+
+Restart your AI coding assistant. Slash commands are loaded at startup.
+
+### Permission errors
+
+Ensure you have write access to the project directory.
+
+### Bun not found
+
+Install Bun from [bun.sh](https://bun.sh):
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```

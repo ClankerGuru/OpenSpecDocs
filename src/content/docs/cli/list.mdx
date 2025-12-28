@@ -1,0 +1,110 @@
+---
+title: openspec list
+description: View active changes or specifications
+---
+
+Displays a table of active changes with task progress, or specifications with requirement counts.
+
+## Usage
+
+```bash
+openspec list [options]
+```
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `--specs` | List specifications instead of changes |
+| `--changes` | List changes (default) |
+| `--json` | Machine-readable output |
+
+## Output
+
+### Changes (default)
+
+```bash
+$ openspec list
+
+┌─────────────────────┬──────────────┐
+│ Change              │ Progress     │
+├─────────────────────┼──────────────┤
+│ add-user-auth       │ 3/5 tasks    │
+│ update-api-schema   │ ✓ Complete   │
+│ fix-validation      │ 0/3 tasks    │
+└─────────────────────┴──────────────┘
+```
+
+### Specifications
+
+```bash
+$ openspec list --specs
+
+┌─────────────────────┬──────────────────┐
+│ Spec                │ Requirements     │
+├─────────────────────┼──────────────────┤
+│ cli-init            │ 12 requirements  │
+│ cli-list            │ 6 requirements   │
+│ user-auth           │ 8 requirements   │
+└─────────────────────┴──────────────────┘
+```
+
+## JSON Output
+
+```bash
+$ openspec list --json
+
+{
+  "changes": [
+    {
+      "name": "add-user-auth",
+      "tasksCompleted": 3,
+      "tasksTotal": 5
+    }
+  ]
+}
+```
+
+## Examples
+
+### Check what's in progress
+
+```bash
+openspec list
+```
+
+### See all capabilities
+
+```bash
+openspec list --specs
+```
+
+### Script integration
+
+```bash
+openspec list --json | jq '.changes[] | select(.tasksCompleted == .tasksTotal)'
+```
+
+## Behavior
+
+- Scans `openspec/changes/` for change directories
+- Excludes `archive/` subdirectory
+- Parses `tasks.md` for completion status
+- Sorts alphabetically by name
+
+## Empty States
+
+```bash
+$ openspec list
+No active changes found.
+
+$ openspec list --specs
+No specs found.
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | No OpenSpec directory found |

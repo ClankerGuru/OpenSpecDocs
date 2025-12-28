@@ -1,0 +1,141 @@
+---
+title: openspec archive
+description: Move completed changes to archive
+---
+
+Archives a completed change by moving it to the archive directory and applying spec deltas to main specs.
+
+## Usage
+
+```bash
+openspec archive <change-name> [options]
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `change-name` | Name of the change to archive |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `--yes`, `-y` | Skip confirmation prompts |
+| `--skip-specs` | Skip spec updates, only move to archive |
+| `--no-validate` | Skip validation (unsafe) |
+
+## What Happens
+
+1. **Validates** the change structure
+2. **Checks tasks** - warns if incomplete
+3. **Shows spec changes** - what will be updated
+4. **Confirms** with user (unless `--yes`)
+5. **Applies deltas** to main specs
+6. **Moves** change to `archive/YYYY-MM-DD-name/`
+
+## Output
+
+```bash
+$ openspec archive add-user-auth
+
+Validating add-user-auth...
+✓ Validation passed
+
+The following specs will be updated:
+
+NEW specs to be created:
+  - user-auth (from changes/add-user-auth/specs/user-auth/spec.md)
+
+EXISTING specs to be updated:
+  - cli-init (from changes/add-user-auth/specs/cli-init/spec.md)
+
+Update 2 specs and archive 'add-user-auth'? [y/N]: y
+
+Applying changes to specs/user-auth/spec.md:
+  + 3 added
+
+Applying changes to specs/cli-init/spec.md:
+  ~ 1 modified
+
+✓ Archived to changes/archive/2025-01-15-add-user-auth/
+```
+
+## Examples
+
+### Interactive archive
+
+```bash
+openspec archive my-change
+```
+
+### Non-interactive (CI/CD)
+
+```bash
+openspec archive my-change --yes
+```
+
+### Skip spec updates
+
+```bash
+openspec archive my-change --skip-specs --yes
+```
+
+### Archive with incomplete tasks
+
+```bash
+$ openspec archive my-change
+
+Warning: 2 incomplete tasks found:
+  - [ ] 2.1 Add tests
+  - [ ] 2.2 Update docs
+
+Continue anyway? [y/N]: y
+```
+
+## Spec Delta Application
+
+Deltas are applied using these symbols:
+
+| Symbol | Operation |
+|--------|-----------|
+| `+` | Added requirements |
+| `~` | Modified requirements |
+| `-` | Removed requirements |
+| `→` | Renamed requirements |
+
+Example output:
+
+```
+Applying changes to specs/auth/spec.md:
+  + 2 added
+  ~ 3 modified
+  - 1 removed
+  → 1 renamed
+```
+
+## Error Handling
+
+### Archive already exists
+
+```bash
+Error: Archive target 2025-01-15-my-change already exists
+```
+
+Rename the existing archive or use a different date.
+
+### Validation failure
+
+```bash
+Error: Validation failed
+  specs/auth/spec.md:15 - Missing scenario
+
+Fix errors before archiving, or use --no-validate (unsafe)
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | Error (validation, conflict, cancelled) |

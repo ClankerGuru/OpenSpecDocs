@@ -1,0 +1,122 @@
+---
+title: Why OpenSpec
+description: How OpenSpec compares to other planning approaches
+---
+
+## The Problem
+
+AI coding assistants are powerful but unpredictable when requirements live only in chat history. Without explicit specs:
+
+- Intent gets lost between sessions
+- Scope creeps without visibility
+- Reviews lack context for what was intended
+- Onboarding requires archaeology
+
+## The OpenSpec Approach
+
+OpenSpec adds a lightweight specification layer that locks intent before implementation.
+
+### Key Outcomes
+
+- **Alignment**: Human and AI agree on specs before work begins
+- **Visibility**: Structured proposals make scope explicit
+- **Auditability**: Changes archive with full context
+- **Portability**: Works across AI tools you already use
+
+## How OpenSpec Differs
+
+### vs. Built-in Plan Mode
+
+Plan mode is great for a single session. OpenSpec focuses on:
+
+- Plans that span multiple sessions
+- Shareable specifications
+- Workspace for iterative refinement
+- Living documentation beyond the conversation
+
+### vs. Other Planning Tools
+
+| Aspect | Others | OpenSpec |
+|--------|--------|----------|
+| **Weight** | Heavy process | Minimal steps |
+| **Focus** | Greenfield (0→1) | Brownfield-first (1→n) |
+| **Specs** | Thrown away after planning | Live in your code |
+| **Changes** | Scattered updates | Grouped per feature |
+
+### vs. No Specs
+
+Without specs:
+- AI generates from vague prompts
+- Requirements get missed or invented
+- No record of intended behavior
+- Rework when reality diverges from expectation
+
+## Core Principles
+
+### Lightweight
+
+- Minimal steps, minimal process
+- Get to code quickly
+- Add complexity only when needed
+
+### Brownfield-First
+
+Most tools assume greenfield projects. OpenSpec excels when:
+
+- Modifying existing behavior
+- Updates span multiple specs
+- You need to understand current state first
+
+### Specs Live in Code
+
+Other tools use requirements during planning, then discard them. OpenSpec preserves:
+
+- What the code is **supposed** to do
+- Not just what it **currently** does
+- Intent behind decisions
+
+### Universal
+
+Works with:
+- Claude Code, Cursor, Codex, GitHub Copilot
+- OpenCode, Windsurf, Gemini CLI, Cline
+- Any AGENTS.md compatible tool
+
+No vendor lock-in. Your specs stay with your code.
+
+## When to Use OpenSpec
+
+**Good fit:**
+- Adding features to existing codebases
+- Changes that need review/approval
+- Multi-session development
+- Team collaboration
+- Audit trails matter
+
+**Maybe skip:**
+- Quick prototypes
+- Throwaway experiments
+- Solo, single-session work
+- Trivial changes (typos, formatting)
+
+## Common Questions
+
+**Isn't this just waterfall?**
+
+Waterfall fails due to rigid, month-long upfront planning. OpenSpec is:
+- Get to "good enough" plan quickly
+- Start coding, iterate as needed
+- Update specs when reality changes
+
+**What if I'm a vibe coder?**
+
+OpenSpec works best when you engage with it. If you want:
+- Magic tool that plans everything → Not this
+- Tool that helps you build the right thing → Yes
+
+**Where do specs live?**
+
+In your codebase, checked into git. They provide:
+- Visibility into system behavior
+- Intent behind the code
+- Context for future changes

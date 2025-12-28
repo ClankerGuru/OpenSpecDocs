@@ -1,0 +1,92 @@
+---
+title: Getting Started
+description: Get up and running with OpenSpec in under 5 minutes
+---
+
+OpenSpec aligns humans and AI coding assistants with spec-driven development so you agree on what to build before any code is written.
+
+## Prerequisites
+
+- [Bun](https://bun.sh) runtime installed
+
+## Installation
+
+Run OpenSpec with bunx (recommended):
+
+```bash
+bunx @clanker-guru/openspec
+```
+
+Or install globally:
+
+```bash
+bun install -g @clanker-guru/openspec
+```
+
+Verify installation:
+
+```bash
+openspec --version
+```
+
+## Initialize Your Project
+
+Navigate to your project directory and run:
+
+```bash
+cd my-project
+openspec init
+```
+
+This will:
+1. Create the `openspec/` directory structure
+2. Generate `openspec/AGENTS.md` with AI instructions
+3. Create `project.md` for project context
+4. Configure slash commands for your selected AI tools
+
+## Your First Change
+
+Ask your AI assistant to create a change proposal:
+
+```
+Create an OpenSpec change proposal for adding user profile search
+```
+
+Or use the slash command (if supported by your tool):
+
+```
+/openspec:proposal Add user profile search
+```
+
+The AI will scaffold:
+- `proposal.md` - Why and what changes
+- `tasks.md` - Implementation checklist  
+- `specs/` - Requirement deltas
+
+## Verify the Change
+
+```bash
+openspec list                    # See active changes
+openspec validate my-change      # Check spec formatting
+openspec show my-change          # Review details
+```
+
+## Implement and Archive
+
+Once specs are approved, implement the tasks:
+
+```
+/openspec:apply my-change
+```
+
+After deployment, archive:
+
+```bash
+openspec archive my-change --yes
+```
+
+## Next Steps
+
+- Read about the [workflow](/concepts/workflow) to understand the three-stage process
+- Learn about [specs and changes](/concepts/specs-and-changes)
+- Explore the [CLI reference](/cli)

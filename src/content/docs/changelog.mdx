@@ -1,0 +1,167 @@
+---
+title: Changelog
+description: OpenSpec version history
+---
+
+## 0.17.2
+
+### Patch Changes
+
+- Fix `--no-interactive` flag in validate command to properly disable spinner, preventing hangs in pre-commit hooks and CI environments
+
+## 0.17.1
+
+### Patch Changes
+
+- Fix pre-commit hook hang issue in config command by using dynamic import for @inquirer/prompts
+
+## 0.17.0
+
+### Minor Changes
+
+- Add `openspec config` command for managing global configuration settings
+- Implement global config directory with XDG Base Directory specification support
+- Add Oh-my-zsh shell completions support for enhanced CLI experience
+
+### Bug Fixes
+
+- Fix hang in pre-commit hooks by using dynamic imports
+- Respect XDG_CONFIG_HOME environment variable on all platforms
+- Resolve Windows compatibility issues in zsh-installer tests
+
+## 0.16.0
+
+### Minor Changes
+
+- Add iFlow-cli integration with slash command support
+- Add Antigravity slash command support
+- Add IDE restart instruction after init
+
+### Bug Fixes
+
+- Generate TOML commands for Qwen Code
+
+## 0.15.0
+
+### Minor Changes
+
+- Add Gemini CLI native TOML-based slash command support
+- Add RooCode integration with configurator and slash commands
+- Fix Cline to use workflows instead of rules
+
+## 0.14.0
+
+### Minor Changes
+
+- Add Qwen Code support with slash command integration
+- Add $ARGUMENTS support to apply slash command
+- Add Qoder CLI support
+- Add CoStrict AI assistant support
+
+### Bug Fixes
+
+- Recreate missing openspec template files in extend mode
+- Prevent false 'already configured' detection
+- Use change-id as fallback title
+
+## 0.13.0
+
+### Minor Changes
+
+- Add CodeBuddy Code support
+- Add CodeRabbit integration
+- Add Cline support
+- Add Crush AI support
+- Add Auggie (Augment CLI) support
+- Archive slash command now supports arguments
+
+### Bug Fixes
+
+- Delta spec validation handles case-insensitive headers
+- Archive validation honors --no-validate flag
+
+## 0.12.0
+
+### Minor Changes
+
+- Add factory function support for slash commands
+- Add non-interactive init options: `--tools`, `--all-tools`, `--skip-tools`
+
+## 0.11.0
+
+### Minor Changes
+
+- Add Amazon Q Developer CLI integration with `.amazonq/prompts/` support
+
+## 0.10.0
+
+### Minor Changes
+
+- Improve init wizard Enter key behavior
+
+## 0.9.0 - 0.9.2
+
+### Patch Changes
+
+- Fix cross-platform path handling issues
+- Fix Windows compatibility for Codex integration
+
+## 0.8.0 - 0.8.1
+
+### Minor Changes
+
+- Add Windsurf support
+- Add Codex slash command support with global prompts
+
+### Patch Changes
+
+- Fix CLI version mismatch
+
+## 0.7.0
+
+### Minor Changes
+
+- Add native Kilo Code workflow integration
+- Always scaffold managed root AGENTS.md stub
+
+## 0.6.0
+
+### Minor Changes
+
+- Slim generated root agent instructions to managed hand-off stub
+
+## 0.5.0
+
+### Minor Changes
+
+- Implement Phase 1 E2E testing with cross-platform CI matrix
+- Add shared runCLI helper for spawn testing
+- Extend CI matrix to bash (Linux/macOS) and pwsh (Windows)
+
+## 0.4.0
+
+### Minor Changes
+
+- Add OpenCode slash commands support
+
+## 0.3.0
+
+### Minor Changes
+
+- Enhance `openspec init` with extend mode and multi-tool selection
+- Add interactive AGENTS.md configurator
+
+## 0.2.0
+
+### Minor Changes
+
+- Add `openspec view` dashboard
+- Generate and update AI slash commands
+- Rename instructions file to `openspec/AGENTS.md`
+- Remove deprecated `openspec diff` command
+
+## 0.1.0
+
+### Minor Changes
+
+- Initial release

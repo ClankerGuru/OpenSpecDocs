@@ -1,0 +1,167 @@
+---
+title: OpenSpec
+description: A lightweight spec-driven framework for AI coding assistants
+template: splash
+hero:
+  tagline: A lightweight spec-driven framework
+  image:
+    file: ../../assets/logos/openspec_pixel_dark.svg
+  actions:
+    - text: Get Started
+      link: /getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/ClankerGuru/OpenSpec
+      icon: external
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+<div class="hero-features">
+  <span class="feature-badge">Universal</span>
+  <span class="feature-badge">Open Source</span>
+  <span class="feature-badge">No API Keys</span>
+  <span class="feature-badge">No MCP</span>
+</div>
+
+<div class="mac-window">
+  <div class="mac-titlebar">
+    <div class="mac-buttons">
+      <span class="mac-btn close"></span>
+      <span class="mac-btn minimize"></span>
+      <span class="mac-btn maximize"></span>
+    </div>
+  </div>
+  <div class="mac-content">
+    <code><span class="cmd">bunx</span> @clanker-guru/openspec</code>
+    <button class="mac-copy" onclick="navigator.clipboard.writeText('bunx @clanker-guru/openspec');this.classList.add('copied');setTimeout(()=>this.classList.remove('copied'),2000)" aria-label="Copy to clipboard" title="Copy to clipboard">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="5" y="5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"></rect>
+        <path d="M3 10.5V3C3 2.44772 3.44772 2 4 2H10.5" stroke="currentColor" stroke-width="1.5"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+## Supported Tools
+
+<div class="tools-list">
+Claude Code, Cursor, Codex, GitHub Copilot, OpenCode, Windsurf, Gemini CLI, Cline, RooCode, Kilo Code, Amazon Q, Antigravity, Qoder, Auggie CLI, Qwen Code, CodeBuddy, CoStrict, Crush, Factory Droid, iFlow
+</div>
+
+## Features
+
+### Review intent, not just code
+
+Each OpenSpec change produces a spec delta that captures the change in requirements of the system. This makes it easy for developers to understand how they're modifying the system and what will need to change.
+
+```diff title="openspec/specs/auth-session/spec.md"
+ ### Requirement: Session expiration
+- The system SHALL expire sessions after a configured duration.
++ The system SHALL support configurable session expiration periods.
+ #### Scenario: Default session timeout
+ - GIVEN a user has authenticated
+- - WHEN 24 hours pass without activity
++ - WHEN 24 hours pass without "Remember me"
+ - THEN invalidate the session token
++ #### Scenario: Extended session with remember me
++ - GIVEN user checks "Remember me" at login
++ - WHEN 30 days have passed
++ - THEN invalidate the session token
++ - AND clear the persistent cookie
+```
+
+## Coming Soon: Workspaces
+
+OpenSpec has become the go-to planning layer for many developers. Now we're building for teams.
+
+- Large codebases
+- Multi-repo planning
+- Customization and integrations
+- Better collaboration
+
+## Quick Links
+
+<CardGrid>
+  <LinkCard title="Installation" href="/installation/" description="Get OpenSpec set up in your project" />
+  <LinkCard title="Quick Start" href="/quick-start/" description="Create your first spec in 5 minutes" />
+  <LinkCard title="CLI Reference" href="/cli/" description="All commands documented" />
+  <LinkCard title="AI Integrations" href="/guides/integrations/" description="20+ supported tools" />
+</CardGrid>
+
+<style>{`
+  .hero-features {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 0 2rem 0;
+  }
+  .feature-badge {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  .mac-window {
+    max-width: 500px;
+    margin: 2rem auto 3rem auto;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #1a1a1a;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .mac-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    background: #2a2a2a;
+  }
+  .mac-buttons {
+    display: flex;
+    gap: 5px;
+  }
+  .mac-btn {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .mac-btn.close { background: #ff5f57; }
+  .mac-btn.minimize { background: #febc2e; }
+  .mac-btn.maximize { background: #28c840; }
+  .mac-copy {
+    padding: 3px;
+    background: transparent;
+    border: 1px solid #4a4a4a;
+    border-radius: 3px;
+    color: #888;
+    cursor: pointer;
+    display: flex;
+  }
+  .mac-copy:hover { background: #3a3a3a; color: #ccc; }
+  .mac-copy.copied { color: #28c840; border-color: #28c840; }
+  .mac-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0.4rem 0.75rem;
+  }
+  .mac-content code {
+    background: transparent;
+    font-size: 0.875rem;
+    color: #b0b0b0;
+  }
+  .mac-content .cmd {
+    color: #82AAFF;
+  }
+  .tools-list {
+    color: var(--sl-color-gray-2);
+    line-height: 1.8;
+    text-align: center;
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 4px;
+    background: var(--sl-color-gray-6);
+  }
+`}</style>

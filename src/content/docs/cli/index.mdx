@@ -1,0 +1,95 @@
+---
+title: CLI Reference
+description: Complete reference for OpenSpec command-line commands
+---
+
+OpenSpec provides a CLI for managing specs and changes.
+
+## Command Overview
+
+| Command | Description |
+|---------|-------------|
+| [`init`](/cli/init) | Initialize OpenSpec in a project |
+| [`list`](/cli/list) | View active changes or specs |
+| [`show`](/cli/show) | Display change or spec details |
+| [`validate`](/cli/validate) | Check spec formatting |
+| [`archive`](/cli/archive) | Move completed changes to archive |
+| [`update`](/cli/update) | Refresh AI instruction files |
+| [`view`](/cli/view) | Interactive dashboard |
+| [`config`](/cli/config) | Manage global settings |
+
+## Quick Reference
+
+```bash
+# Project setup
+openspec init                    # Initialize OpenSpec
+openspec update                  # Refresh AI instructions
+
+# List items
+openspec list                    # Active changes
+openspec list --specs            # All specifications
+
+# View details
+openspec show my-change          # Change details
+openspec show auth --type spec   # Spec details
+
+# Validation
+openspec validate my-change      # Validate change
+openspec validate --strict       # Strict mode
+
+# Complete workflow
+openspec archive my-change       # Archive after deploy
+openspec view                    # Interactive dashboard
+```
+
+## Global Flags
+
+These flags work with most commands:
+
+| Flag | Description |
+|------|-------------|
+| `--json` | Machine-readable output |
+| `--no-interactive` | Disable prompts |
+| `--help` | Show command help |
+| `--version` | Show version |
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | General error |
+| 2 | Validation failure |
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `XDG_CONFIG_HOME` | Global config directory |
+| `CODEX_HOME` | Codex prompts directory |
+
+## Examples
+
+### Initialize with specific tools
+
+```bash
+openspec init --tools claude,cursor
+```
+
+### Validate all changes
+
+```bash
+openspec validate --strict
+```
+
+### Archive without prompts
+
+```bash
+openspec archive my-change --yes
+```
+
+### JSON output for scripts
+
+```bash
+openspec list --json | jq '.changes[].name'
+```

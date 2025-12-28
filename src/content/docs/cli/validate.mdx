@@ -1,0 +1,137 @@
+---
+title: openspec validate
+description: Check spec formatting and structure
+---
+
+Validates change proposals and specifications for correct formatting.
+
+## Usage
+
+```bash
+openspec validate [item] [options]
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `item` | Change or spec name (optional - validates all if omitted) |
+
+## Options
+
+| Option | Description |
+|--------|-------------|
+| `--strict` | Comprehensive validation |
+| `--type <type>` | Force type: `change` or `spec` |
+| `--json` | Machine-readable output |
+| `--no-interactive` | Disable spinner (for CI) |
+
+## Validation Checks
+
+### Basic Checks
+- Directory structure exists
+- Required files present (`proposal.md`, `tasks.md`)
+- Spec files parseable
+
+### Strict Mode (`--strict`)
+- Scenario format: `#### Scenario: Name`
+- Requirement wording: SHALL/MUST
+- Delta operations valid
+- No empty sections
+- At least one scenario per requirement
+
+## Output
+
+### Success
+
+```bash
+$ openspec validate add-user-auth --strict
+
+✓ add-user-auth validated successfully
+```
+
+### Errors
+
+```bash
+$ openspec validate add-user-auth --strict
+
+✗ add-user-auth validation failed
+
+Errors:
+  specs/auth/spec.md:15 - Requirement must have at least one scenario
+  specs/auth/spec.md:23 - Invalid scenario format (use #### Scenario:)
+```
+
+## Examples
+
+### Validate specific change
+
+```bash
+openspec validate my-change
+```
+
+### Strict validation
+
+```bash
+openspec validate my-change --strict
+```
+
+### Validate all changes
+
+```bash
+openspec validate --strict
+```
+
+### CI/CD usage
+
+```bash
+openspec validate --strict --no-interactive
+```
+
+### JSON output for parsing
+
+```bash
+openspec validate my-change --json
+```
+
+## Common Errors
+
+### "Requirement must have at least one scenario"
+
+Every requirement needs at least one scenario block:
+
+```markdown
+### Requirement: User Login
+
+#### Scenario: Valid credentials
+- **WHEN** valid email and password
+- **THEN** return JWT token
+```
+
+### "Invalid scenario format"
+
+Use exactly `#### Scenario:` (4 hashtags):
+
+```markdown
+#### Scenario: Success case    ✓ Correct
+
+### Scenario: Wrong header     ✗ Wrong
+- **Scenario: Bullet format    ✗ Wrong
+```
+
+### "Change must have at least one delta"
+
+Ensure `changes/name/specs/` contains `.md` files with operation headers:
+
+```markdown
+## ADDED Requirements
+...
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Validation passed |
+| 1 | Validation failed |
+| 2 | Item not found |

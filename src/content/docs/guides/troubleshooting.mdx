@@ -1,0 +1,199 @@
+---
+title: Troubleshooting
+description: Common issues and solutions
+---
+
+## Validation Errors
+
+### "Requirement must have at least one scenario"
+
+Every requirement needs a scenario block.
+
+**Fix:**
+```markdown
+### Requirement: User Login
+The system SHALL authenticate users.
+
+#### Scenario: Valid credentials
+- **WHEN** correct email and password provided
+- **THEN** return authentication token
+```
+
+### "Invalid scenario format"
+
+Scenarios must use exactly `#### Scenario:` format.
+
+**Wrong:**
+```markdown
+### Scenario: Test       ✗ (3 hashtags)
+- **Scenario: Test       ✗ (bullet)
+**Scenario**: Test        ✗ (bold colon)
+```
+
+**Right:**
+```markdown
+#### Scenario: Test      ✓
+```
+
+### "Change must have at least one delta"
+
+Your change's `specs/` directory needs spec files with operation headers.
+
+**Check:**
+```bash
+ls openspec/changes/my-change/specs/
+```
+
+**Fix:** Add spec files with `## ADDED Requirements` or similar headers.
+
+### "Duplicate requirement header"
+
+A MODIFIED or ADDED requirement conflicts with an existing one.
+
+**Debug:**
+```bash
+openspec show my-change --json --deltas-only
+```
+
+**Fix:** Use MODIFIED to update existing requirements, not ADDED.
+
+## CLI Issues
+
+### "No OpenSpec directory found"
+
+Run `openspec init` first:
+
+```bash
+openspec init
+```
+
+### Slash commands not appearing
+
+1. **Restart your AI assistant** - Commands load at startup
+2. **Check files exist:**
+   ```bash
+   ls .claude/commands/openspec/  # For Claude Code
+   ls .cursor/commands/           # For Cursor
+   ```
+3. **Refresh configurations:**
+   ```bash
+   openspec update
+   ```
+
+### "Command not found: openspec"
+
+Install OpenSpec:
+
+```bash
+bun install -g @clanker-guru/openspec
+```
+
+Or use bunx:
+
+```bash
+bunx @clanker-guru/openspec --version
+```
+
+### Archive target already exists
+
+An archive with the same date exists.
+
+**Options:**
+1. Wait until tomorrow
+2. Rename existing archive
+3. Use a different change name
+
+## Spec Issues
+
+### Changes lost after archive
+
+MODIFIED requirements replace the entire block. Include full content.
+
+**Wrong:**
+```markdown
+## MODIFIED Requirements
+### Requirement: Login
+Add OTP support.  # Just the change
+```
+
+**Right:**
+```markdown
+## MODIFIED Requirements
+### Requirement: Login
+The system SHALL authenticate users with email, password, and OTP.
+
+#### Scenario: Complete login
+- **WHEN** all credentials valid
+- **THEN** issue session token
+```
+
+### Scenarios not parsing
+
+Use exact format with bold keywords:
+
+```markdown
+#### Scenario: Name
+- **WHEN** condition
+- **THEN** result
+- **AND** additional result
+```
+
+**Debug:**
+```bash
+openspec show my-change --json | jq '.deltas[].requirements[].scenarios'
+```
+
+## AI Assistant Issues
+
+### AI not following OpenSpec workflow
+
+1. Check AGENTS.md exists:
+   ```bash
+   cat openspec/AGENTS.md | head -20
+   ```
+
+2. For slash command tools, use the command:
+   ```
+   /openspec:proposal My feature
+   ```
+
+3. For AGENTS.md tools, be explicit:
+   ```
+   Following the OpenSpec workflow in AGENTS.md, create a proposal for...
+   ```
+
+### AI creating wrong structure
+
+Provide explicit guidance:
+
+```
+Create an OpenSpec proposal following the exact structure:
+- proposal.md with Why/What Changes/Impact sections
+- tasks.md with numbered checkbox items
+- specs/ directory with delta files using ## ADDED Requirements
+```
+
+## Getting Help
+
+### Debug output
+
+```bash
+# Verbose validation
+openspec validate my-change --strict --json
+
+# Inspect deltas
+openspec show my-change --json --deltas-only | jq '.'
+
+# Check structure
+find openspec/changes/my-change -type f
+```
+
+### Report issues
+
+[GitHub Issues](https://github.com/ClankerGuru/OpenSpec/issues)
+
+Include:
+- OpenSpec version (`openspec --version`)
+- Command that failed
+- Error message
+- Relevant file contents

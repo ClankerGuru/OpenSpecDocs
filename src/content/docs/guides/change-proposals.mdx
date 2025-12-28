@@ -1,0 +1,183 @@
+---
+title: Change Proposals
+description: When and how to create OpenSpec change proposals
+---
+
+Change proposals capture **what** should change and **why** before implementation begins.
+
+## When to Create a Proposal
+
+**Create proposal for:**
+- New features or capabilities
+- Breaking changes (API, schema)
+- Architecture or pattern changes
+- Performance optimizations that change behavior
+- Security pattern updates
+
+**Skip proposal for:**
+- Bug fixes (restoring intended behavior)
+- Typos, formatting, comments
+- Dependency updates (non-breaking)
+- Configuration changes
+- Tests for existing behavior
+
+## Structure
+
+```
+openspec/changes/add-feature/
+├── proposal.md     # Why and what
+├── tasks.md        # Implementation steps
+├── design.md       # Technical decisions (optional)
+└── specs/
+    └── capability/
+        └── spec.md # Delta requirements
+```
+
+## proposal.md
+
+Explains the change at a high level:
+
+```markdown
+# Change: Add Two-Factor Authentication
+
+## Why
+Users with sensitive data need additional security.
+Current password-only auth is insufficient for compliance.
+
+## What Changes
+- Add TOTP-based second factor to login flow
+- Store encrypted OTP secrets per user
+- **BREAKING**: All users must re-authenticate
+
+## Impact
+- Affected specs: auth, user-management
+- Affected code: src/auth/, src/api/login, src/db/users
+```
+
+## tasks.md
+
+Concrete implementation checklist:
+
+```markdown
+## 1. Database
+- [ ] 1.1 Add otp_secret column to users table
+- [ ] 1.2 Create otp_verification_logs table
+- [ ] 1.3 Write migration script
+
+## 2. Backend
+- [ ] 2.1 Implement OTP generation service
+- [ ] 2.2 Add /auth/otp/setup endpoint
+- [ ] 2.3 Modify login to require OTP
+- [ ] 2.4 Add OTP verification endpoint
+
+## 3. Frontend
+- [ ] 3.1 Create OTP setup wizard
+- [ ] 3.2 Add OTP input to login form
+- [ ] 3.3 Handle OTP errors
+
+## 4. Testing
+- [ ] 4.1 Unit tests for OTP service
+- [ ] 4.2 Integration tests for auth flow
+- [ ] 4.3 E2E tests for login with OTP
+```
+
+## design.md (Optional)
+
+Create when the change involves:
+- Cross-cutting concerns (multiple services)
+- New architectural patterns
+- External dependencies
+- Data model changes
+- Security considerations
+- Migration complexity
+
+```markdown
+## Context
+Adding 2FA to comply with SOC2 requirements.
+Must support existing 10K+ users without disruption.
+
+## Goals / Non-Goals
+- Goals: TOTP support, graceful migration
+- Non-Goals: SMS/email 2FA, hardware keys (future)
+
+## Decisions
+- **TOTP over SMS**: More secure, no phone number needed
+- **30-day grace period**: Users can skip 2FA temporarily
+- **Encrypted secrets**: AES-256 at rest
+
+## Risks / Trade-offs
+- Risk: Users locked out if phone lost
+- Mitigation: Recovery codes generated at setup
+
+## Migration Plan
+1. Deploy with 2FA optional
+2. Email users about upcoming requirement
+3. Enable enforcement after grace period
+4. Support handles edge cases
+
+## Open Questions
+- Should admins be able to bypass for users?
+```
+
+## Spec Deltas
+
+Delta files show requirement changes:
+
+```markdown
+## ADDED Requirements
+
+### Requirement: Two-Factor Authentication
+The system MUST support TOTP-based authentication.
+
+#### Scenario: OTP setup
+- **WHEN** user enables 2FA
+- **THEN** generate and store encrypted secret
+- **AND** display QR code for authenticator app
+
+#### Scenario: OTP verification
+- **WHEN** valid 6-digit code provided
+- **THEN** complete authentication
+```
+
+## Creating a Proposal
+
+### Using AI
+
+```
+Create an OpenSpec change proposal for adding rate limiting to the API
+```
+
+Or with slash command:
+
+```
+/openspec:proposal Add API rate limiting
+```
+
+### Manually
+
+```bash
+# Create structure
+mkdir -p openspec/changes/add-rate-limiting/specs/api
+
+# Create files
+touch openspec/changes/add-rate-limiting/{proposal.md,tasks.md}
+touch openspec/changes/add-rate-limiting/specs/api/spec.md
+```
+
+## Validation
+
+```bash
+# Check structure and formatting
+openspec validate add-rate-limiting --strict
+
+# Review the proposal
+openspec show add-rate-limiting
+```
+
+## Best Practices
+
+1. **Keep proposals focused** - One feature per change
+2. **Name with verbs** - `add-`, `update-`, `remove-`, `refactor-`
+3. **Be specific in tasks** - Actionable items, not vague goals
+4. **Include all affected specs** - Even minor modifications
+5. **Get approval before implementing** - Align on specs first

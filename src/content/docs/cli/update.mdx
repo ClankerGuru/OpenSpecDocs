@@ -1,0 +1,89 @@
+---
+title: openspec update
+description: Refresh AI instruction files
+---
+
+Updates AI tool configuration files and instruction templates to the latest version.
+
+## Usage
+
+```bash
+openspec update [path]
+```
+
+## Arguments
+
+| Argument | Description |
+|----------|-------------|
+| `path` | Project directory (default: current) |
+
+## What It Updates
+
+- `openspec/AGENTS.md` - AI workflow instructions
+- `AGENTS.md` (root) - Handoff stub
+- Tool-specific slash commands
+- Managed marker content
+
+## When to Use
+
+Run `openspec update` after:
+
+- Upgrading OpenSpec version
+- Adding new AI tools to your workflow
+- Syncing team configurations
+
+## Output
+
+```bash
+$ openspec update
+
+Updating OpenSpec configuration...
+✓ Updated openspec/AGENTS.md
+✓ Updated AGENTS.md
+✓ Updated .claude/commands/openspec/proposal.md
+✓ Updated .claude/commands/openspec/apply.md
+✓ Updated .claude/commands/openspec/archive.md
+
+OpenSpec configuration updated successfully.
+```
+
+## Managed Content
+
+OpenSpec manages content between markers:
+
+```markdown
+<!-- OPENSPEC:START -->
+This content is managed by OpenSpec.
+Do not edit manually.
+<!-- OPENSPEC:END -->
+```
+
+Content outside markers is preserved.
+
+## Examples
+
+### Update current project
+
+```bash
+openspec update
+```
+
+### Update specific directory
+
+```bash
+openspec update ./packages/api
+```
+
+### After OpenSpec upgrade
+
+```bash
+bun install -g @clanker-guru/openspec@latest
+openspec update
+```
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | Success |
+| 1 | Not an OpenSpec project |
